@@ -1,0 +1,24 @@
+class Dispenseurs
+-- responsable pour la protection de l'espace aerienne
+
+types
+public typesMissile = <A> | <B> | <C>;
+
+instance variables
+protected Priorite	: int;   -- priorite de type de missile
+
+operations
+-- constructeur
+public Dispenseurs: int ==> Dispenseurs
+	Dispenseurs(priorite) ==
+		(Priorite := priorite;);
+
+-- fonction qui permet d'activer le dispenseur 
+public GetTypeMissile: () ==> typesMissile
+	GetTypeMissile() ==
+		(if (Priorite = 1) then ( return <A>)
+		else if (Priorite = 2) then (return <B>)
+		else return <C>;		
+	);	
+
+end Dispenseurs

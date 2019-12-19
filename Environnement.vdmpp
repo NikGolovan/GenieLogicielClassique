@@ -1,0 +1,112 @@
+class Environnement
+-- l'environnement qui simule le fonctionnement de systeme
+types
+-- chaque donnee d'entree
+public data	= int * int * nat * nat * nat
+
+instance variables
+--les variables qui indique les parametres pour les detecteurs (distance, latitude, longitude)
+private envDistance	: int;
+private envLongitude	: nat;
+private envLatitude	: nat;
+
+-- variables des entre et sortie
+private io       : IO := new IO();
+private datas	 : seq of data := [];
+private DureSimulation	 : nat;
+private fini : bool := false;
+private MonSysteme  : SystemeMissile;
+
+operations
+-- constructeur de l'environnement
+public Environnement: seq of char ==> Environnement
+  Environnement(fichierData) ==
+   (let mk_ (-,mk_(t,input)) = io.freadval[nat * seq of data](fichierData) -- lecture des donnees a partir d'un fichier "fichierData" 
+    in
+     (datas := input;            -- chargement de la sequence des donnees lues dans la liste "Datas"
+      DureSimulation := t;      -- duree de simulation prevue
+     );
+         
+   MonSysteme := new SystemeMissile();
+   envDistance := 20;
+   envLatitude := 80;
+   envLongitude := 160;
+          IO`print("\n****************************************************************************************************");
+          IO`print("\n\t\t\t---- Etat initial de l'intercepteur Aster 30: à l'écoute de menace -----");  IO`print("\n");                     		
+          IO`print("\tDistance de missile = ");IO`print(" Pas de missile detecte"); IO`print("\tType Missile ="); IO`print(" Non defini");  IO`print("\t Dispenseur active =");  IO`print(" Aucun dispenseur active") ;  
+          IO`print("\n****************************************************************************************************");
+   );
+   
+-- simulation des donnees de l'environnement
+ public SetDistance: int ==> ()    
+	SetDistance(distance) ==
+	envDistance := distance;
+	
+public SetLatitude: nat ==> ()    
+	SetLatitude(latitude) ==
+	envLatitude := latitude;
+	
+public SetLongitude: nat ==> ()    
+	SetLongitude(longitude) ==
+	envLongitude := longitude;
+   
+--stimuli : environnement ---> systeme de regulation (pilote)
+private stimuli: () ==> ()
+stimuli() ==
+ (if len datas > 0
+  then (dcl dateActuelle : nat := Application`horloge.GetTime();
+  let mk_ (priorite, distance, latitude, longitude, date) = hd datas 
+  in
+   (if date <= dateActuelle
+    then (SetDistance(distance);
+          SetLatitude(latitude);
+          SetLongitude(longitude);    
+          IO`print("\n****************************************************************************************************");
+          IO`print("\n\t\t\t-!-!-Menace detectee-!-!-"); IO`print("\n");                  		
+          IO`print("\tDistance= ");IO`print(distance); IO`print("\tLatitude="); IO`print(latitude);  IO`print("\tLongitude=");  IO`print(longitude) ;  
+          IO`print("\tType Missile=");  IO`print(new Dispenseurs(priorite).GetTypeMissile()) ; IO`print("\t  Dispenseur active=");  IO`print(new Controleur(longitude).GetTypeDispenseur()) ;                            
+          IO`print("\n*****************************************************************************************************");
+          datas := tl datas;
+          return
+         );
+         );
+  )
+  else (fini := true;
+        return
+       );
+ );	
+   
+-- Operations sur le fonctionalite de differents capteurs
+public ReadDistance: () ==> int
+	ReadDistance() ==
+		return envDistance;
+		
+public ReadLatitude: () ==> nat
+	ReadLatitude() ==
+		return envLatitude;
+		
+public ReadLongitude: () ==> nat
+	ReadLongitude() ==
+		return envLongitude;		
+		
+-- boolean pour la boucle while dans produireStimuli()
+public estFini : () ==> bool
+estFini () == 
+  return datas = [] and fini;
+
+--lancer: simulation de systeme  
+public produireStimuli: () ==> ()
+produireStimuli () == 
+ (--while not estFini() do
+    while Application`horloge.GetTime() < DureSimulation  do
+    (
+    --produire le stimuli: action des capteurs
+     stimuli();
+     -- actionner le pilote
+     SystemeMissile`Pilote.Action();
+     -- utiliser l'horloge
+     Application`horloge.StepTime();
+    );
+ );	
+   
+end Environnement

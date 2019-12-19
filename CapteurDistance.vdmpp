@@ -1,0 +1,21 @@
+class CapteurDistance is subclass of Capteur
+
+instance variables
+-- TODO Define instance variables here
+operations
+
+-- constucteur de Capteur Distance
+public CapteurDistance: nat * typeCapteur * nat ==> CapteurDistance
+	CapteurDistance(id, type, distanceCible) ==
+		(ID := id;
+		Type := type;
+		Valeur := distanceCible;
+		);
+
+-- Action du Capteur:  "donne une estimation de la distance P d'une missile à intercepter"
+public Action: () ==> ()
+	Action() ==
+		(Valeur := Application`env.ReadDistance();
+		);
+
+end CapteurDistance

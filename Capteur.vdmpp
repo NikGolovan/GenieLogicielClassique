@@ -1,0 +1,31 @@
+class Capteur
+-- Classe parent pour modeliser les capteurs
+
+types
+-- les types des capteurs
+public typeCapteur 	= <CAPTEUR_LONGITUDE> | <CAPTEUR_LATITUDE>  | <CAPTEUR_DISTANCE>;
+
+instance variables
+protected ID	: nat; -- identifiant des capteurs
+protected Type	: typeCapteur;  --type des capteurs
+protected Valeur	: nat;   -- valeur mesure par le capteur
+
+operations
+-- recuperer l'identifiant d'un capteur
+public GetID: () ==> nat
+	GetID() ==
+		return ID;
+--recuperer le type d'un capteur
+public GetType: () ==> typeCapteur
+	GetType() ==
+		return Type;
+--retourne la valeur mesure par un capteur
+public ReadValeur: () ==> nat
+	ReadValeur() ==
+		return Valeur;
+		
+-- la fonction principale realise par un capteur. 
+public Action: () ==> ()
+	Action() ==
+		is subclass responsibility
+end Capteur

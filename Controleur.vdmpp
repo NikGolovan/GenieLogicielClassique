@@ -1,0 +1,38 @@
+class Controleur
+-- classe principale qui commande les dispenseurs de tirs	
+types 
+-- les dispanseurs de tire (chaque controle la zone airienne de 60 degres)
+public dispenseurs = <DISP00> | <DISP60> | <DISP120> | <DISP180> | <DISP240> | <DISP300>;
+
+instance variables
+-- valeur cible de latitude
+private ListeActeur	: map nat to Capteur`typeCapteur := { |-> };
+protected Angle	: int;   -- angle de couverture passe en parametres
+protected TypeDispenseur : dispenseurs;  --type de dispenseurs
+
+operations
+-- le constructeur
+public Controleur: int ==> Controleur
+	Controleur(angle) ==
+		(Angle := angle;);
+		
+-- rajoute les acteurs du systeme
+public AjouterActeur: nat * Capteur`typeCapteur ==> ()
+	AjouterActeur(id, type) ==
+		(ListeActeur := ListeActeur ++ {id |-> type};
+		)
+pre id not in set dom ListeActeur
+post card(dom ListeActeur) = card(dom ListeActeur~) + 1;	
+
+-- fonction qui permet d'activer le dispenseur 
+public GetTypeDispenseur: () ==> dispenseurs
+	GetTypeDispenseur() ==
+		(if (Angle < 60) then ( return <DISP00>)
+		else if (Angle <= 120) then (return <DISP60>)
+		else if (Angle <= 180) then (return <DISP120>)
+		else if (Angle <= 240) then (return <DISP180>)
+		else if (Angle <= 120) then (return <DISP240>)
+		else return <DISP300>;		
+	);
+		
+end Controleur

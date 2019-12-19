@@ -1,0 +1,19 @@
+class CapteurLongitude is subclass of Capteur
+instance variables
+-- TODO Define instance variables here
+operations
+
+-- constucteur de Capteur Longitude
+public CapteurLongitude: nat * typeCapteur * nat ==> CapteurLongitude
+	CapteurLongitude(id, type, longitudeCible) ==
+		(ID := id;
+		Type := type;
+		Valeur := longitudeCible;
+		);
+
+-- Action du Capteur:  "donne une estimation de longitude"
+public Action: () ==> ()
+	Action() ==
+		(Valeur := Application`env.ReadLongitude();
+		);
+end CapteurLongitude

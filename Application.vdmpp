@@ -1,0 +1,20 @@
+class Application
+-- la classe qui fait interagir les diferents composants du systeme de Missile
+
+instance variables
+-- instance de la class Environnement
+static public env : Environnement := new Environnement("missileScenario.txt");
+static public horloge : Horloge := new Horloge();
+
+operations
+
+-- faire une simulation
+public Simuler: () ==> ()
+Simuler() ==
+ (-- activer environment pour creer un stimuli
+  env.produireStimuli();
+  IO`print("\nSimulation termine l'instant: ");
+  IO`print(horloge.GetTime());
+ );
+
+end Application

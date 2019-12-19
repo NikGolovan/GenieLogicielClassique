@@ -1,0 +1,27 @@
+class Detecteur
+-- classe qui active les capteurs
+instance variables
+private ListeActeur	: map nat to Capteur`typeCapteur := { |-> };
+
+operations
+-- rajoute les acteurs du systeme
+public AjouterActeur: nat * Capteur`typeCapteur ==> ()
+	AjouterActeur(id, type) ==
+		(ListeActeur := ListeActeur ++ {id |-> type};
+		)
+pre id not in set dom ListeActeur
+post card(dom ListeActeur) = card(dom ListeActeur~) + 1;
+
+-- actionner les capteurs
+public Action: () ==> ()
+Action() ==
+ (
+--actionner CAPTEUR DE DISTANCE
+ SystemeMissile`CapteurDistance.Action();
+ --actionner CAPTEUR  DE LATITUDE
+ SystemeMissile`CapteurLatitude.Action();
+--actionner REGULATEUR  DE LONGITUDE
+ SystemeMissile`CapteurLongitude.Action();
+ );
+
+end Detecteur

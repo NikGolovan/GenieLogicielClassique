@@ -1,0 +1,20 @@
+class CapteurLatitude is subclass of Capteur
+instance variables
+-- TODO Define instance variables here
+operations
+
+-- constucteur de Capteur Latitude
+public CapteurLatitude: nat * typeCapteur * nat ==> CapteurLatitude
+	CapteurLatitude(id, type, latitudeCible) ==
+		(ID := id;
+		Type := type;
+		Valeur := latitudeCible;
+		);
+
+-- Action du Capteur:  "donne une estimation de latitude"
+public Action: () ==> ()
+	Action() ==
+		(Valeur := Application`env.ReadLatitude();
+		);
+
+end CapteurLatitude
