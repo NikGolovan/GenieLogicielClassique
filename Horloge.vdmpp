@@ -1,0 +1,23 @@
+class Horloge
+--classe responsable pour la duree de simulation
+
+instance variables
+--date courante:  horloge
+dateActuelle: nat := 0;
+
+values
+--period d'Horloge
+periode : nat = 1;
+
+operations
+--cadencement de l'horloge
+public StepTime : () ==> ()
+StepTime() ==
+  dateActuelle:= dateActuelle + periode;
+
+--retourne  la date actuelle 
+public GetTime : () ==> nat
+GetTime() ==
+  return dateActuelle;
+
+end Horloge

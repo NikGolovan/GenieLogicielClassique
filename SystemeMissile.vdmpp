@@ -1,0 +1,21 @@
+class SystemeMissile
+-- classe qui configure le systeme globale
+
+instance variables
+--instantier les classes
+public static Pilote : Detecteur := new Detecteur(); -- constructeur de Controleur qui recois latitude (en degre) en parametre pour la simulation  
+public static CapteurDistance	: CapteurDistance := new CapteurDistance(1, <CAPTEUR_DISTANCE>, 25);  -- capteur de distance qui recois 25km comme distance cible
+public static CapteurLatitude	: CapteurLatitude := new CapteurLatitude(2, <CAPTEUR_LATITUDE>, 90);  -- capteur de latittude qui designe l'angle depuis equatorial (entre -90° et 90°)
+public static CapteurLongitude	: CapteurLongitude := new CapteurLongitude(3, <CAPTEUR_LONGITUDE>, 120);  -- capteur de longitude qui designe l'angle mesure depuis l'axe X entre -180° et 180°
+
+operations
+-- designe tout le systeme avec tous les objets (controleur, capteurs)
+public SystemeMissile: () ==> SystemeMissile
+	SystemeMissile() ==
+		(
+		Pilote.AjouterActeur(CapteurDistance.GetID(), CapteurDistance.GetType());
+		Pilote.AjouterActeur(CapteurLatitude.GetID(), CapteurLatitude.GetType());
+		Pilote.AjouterActeur(CapteurLongitude.GetID(), CapteurLongitude.GetType());
+		);
+		
+end SystemeMissile
